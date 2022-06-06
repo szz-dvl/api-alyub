@@ -32,6 +32,13 @@ router.put('/editProfile/:id', checkToken, async function (req, res, next) {
 
     if (req.user === req.params.id) {
       
+      /**
+       * Esta es un poco rara Alyub, la comparación anterior no tiene demasiado sentido si la petición está autorizada, 
+       * creo haber implementado bien lo del token, en cualquier caso el parámetro "id" es redundante aquí a no ser que 
+       * lo que se pretenda es que cualquier usuario pueda modificar a cualquier otro usuario. Lo hablamos el miércoles 
+       * si acaso.
+       */
+
       let hash = null;
 
       if (req.body.password) 
