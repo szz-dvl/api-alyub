@@ -10,9 +10,17 @@ module.exports = {
             const decoded = jwt.verify(req.headers["authorization"].split(" ").pop(), jwt_secret);
             req.user = decoded._id;
 
+            if (decoded.exp) {
+                
+                const diff = Date.now() - decoded.exp;
+                
+                if (diff > 24 * 60 * 60 * 1000)
+                    next(new Error("Expired token"));
+            }
+
             next();
         } else 
-            next(new Error("No \"authorization\" header found"));
+            next(new Error("No \"Authorization\" header found"));
     },
     checkPopulation: (req, res, next) => {
         try {

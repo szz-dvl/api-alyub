@@ -12,10 +12,10 @@ router.post('/register', async function (req, res, next) {
   try {
 
     const expiration = new Date();
-    expiration.setDate(expiration.getDate() + 1)
+    expiration.setDate(expiration.getDate() + 1);
 
     const created = await userService.insertOne(req.body);
-    res.status(201).json({ token: jwt.sign({ _id: created._id, exp: expiration }, jwt_secret) });
+    res.status(201).json({ token: jwt.sign({ _id: created._id, exp: expiration.getTime() }, jwt_secret) });
 
   } catch(err) {
 
