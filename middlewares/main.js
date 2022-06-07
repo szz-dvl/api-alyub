@@ -12,9 +12,9 @@ module.exports = {
 
             if (decoded.exp) {
                 
-                const diff = Date.now() - decoded.exp;
+                const diff = decoded.exp - Date.now();
                 
-                if (diff > 24 * 60 * 60 * 1000)
+                if (diff < 0)
                     res.status(401).send("Expired token");
             }
 
