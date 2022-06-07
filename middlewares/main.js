@@ -7,19 +7,28 @@ module.exports = {
 
         if (req.headers["authorization"]) {
 
-            const decoded = jwt.verify(req.headers["authorization"].split(" ").pop(), jwt_secret);
-            req.user = decoded._id;
+            try {
+                
+                const decoded = jwt.verify(req.headers["authorization"].split(" ").pop(), jwt_secret);
+                req.user = decoded._id;
 
-            if (decoded.exp) {
-                
-                const diff = decoded.exp - Date.now();
-                
-                if (diff < 0)
-                    res.status(401).send("Expired token");
+                if (decoded.exp) {
+
+                    /** La propia libreria ya se encarga de esto, no debiera hacer falta */
+
+                    const diff = decoded.exp - Date.now();
+
+                    if (diff < 0)
+                        res.status(401).send("Expired token");
+                }
+
+                next();
+
+            } catch (err) {
+                res.status(401).send("Bad token");
             }
 
-            next();
-        } else 
+        } else
             next(new Error("No \"Authorization\" header found"));
     },
     checkPopulation: (req, res, next) => {
