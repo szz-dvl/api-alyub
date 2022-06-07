@@ -15,7 +15,7 @@ module.exports = {
                 const diff = Date.now() - decoded.exp;
                 
                 if (diff > 24 * 60 * 60 * 1000)
-                    next(new Error("Expired token"));
+                    res.status(401).send("Expired token");
             }
 
             next();
